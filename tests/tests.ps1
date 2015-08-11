@@ -42,16 +42,16 @@ $cic = New-ICSession -ComputerName $cicServer -User $cicUser -Password $cicPassw
 Get-ICUsers $cic
 
 # Gets a user
-Get-ICUser $cic -UserId $cicUser
+Get-ICUser $cic -User $cicUser
 
 # Create a new user
-New-ICUser $cic -UserId $cicTestUser1 -Password '123456' -Extension '8001'
+New-ICUser $cic -User $cicTestUser1 -Password '123456' -Extension '8001'
 
 # Create a new user w/o the extension
-New-ICUser $cic -UserId $cicTestUser2 -Password '12345'
+New-ICUser $cic -User $cicTestUser2 -Password '12345'
 
 # Create a new user w/o the extension and the password
-New-ICUser $cic -UserId $cicTestUser3
+New-ICUser $cic -User $cicTestUser3
 
 ##############
 # Workgroups #
@@ -61,22 +61,22 @@ New-ICUser $cic -UserId $cicTestUser3
 Get-ICWorkgroups $cic
 
 # Get Workgroup
-Get-ICWorkgroup $cic -WorkgroupId $cicExistingWorkgroup
+Get-ICWorkgroup $cic -Workgroup $cicExistingWorkgroup
 
 # Create a new workgroup
-New-ICWorkgroup $cic -WorkgroupId $cicTestWorkgroup -Extension '9010' -Members @($cicTestUser1, $cicTestUser2, $cicTestUser3)
+New-ICWorkgroup $cic -Workgroup $cicTestWorkgroup -Extension '9010' -Members @($cicTestUser1, $cicTestUser2, $cicTestUser3)
 
 # Remove it
-Remove-ICWorkgroup $cic -WorkgroupId $cicTestWorkgroup
+Remove-ICWorkgroup $cic -Workgroup $cicTestWorkgroup
 
 ###########
 # Cleanup #
 ###########
 
 # Remove test users
-Remove-ICUser $cic -UserId $cicTestUser1
-Remove-ICUser $cic -UserId $cicTestUser2
-Remove-ICUser $cic -UserId $cicTestUser3
+Remove-ICUser $cic -User $cicTestUser1
+Remove-ICUser $cic -User $cicTestUser2
+Remove-ICUser $cic -User $cicTestUser3
 
 ######################
 # Disconnect Session #

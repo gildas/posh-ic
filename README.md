@@ -37,7 +37,7 @@ Remove-ICSession $cic
 Get-ICUserStatus $cic
 Get-ICUserStatus $cic 'agent001'
 ```
->If a userId is not passed, it will use the currently logged on user
+>If a user id is not passed, it will use the currently logged on user
 
 **Get all users**
 ```posh
@@ -46,21 +46,21 @@ Get-ICUsers $cic
 **Gets a user**
 ```posh
 Get-ICUser $cic
-Get-ICUser $cic -UserId 'agent001'
+Get-ICUser $cic -User 'agent001'
 ```
->If a userId is not passed, it will use the currently logged on user
+>If a user id is not passed, it will use the currently logged on user
 
 **Create a new user**
 ```posh
-New-ICUser $cic -UserId 'agent001'
-New-ICUser $cic -UserId 'agent001' -Password '1234'
-New-ICUser $cic -UserId 'agent001' -Password '1234' -Extension '8001'
+New-ICUser $cic -User 'agent001'
+New-ICUser $cic -User 'agent001' -Password '1234'
+New-ICUser $cic -User 'agent001' -Password '1234' -Extension '8001'
 ```
 >If the password ommitted, it will be set to '1234'
 
 **Delete a user**
 ```posh
-Remove-ICUser $cic -UserId 'agent001'
+Remove-ICUser $cic -User 'agent001'
 ```
 
 ### Workgroups Functions
@@ -72,15 +72,15 @@ Get-ICWorkgroups $cic
 
 **Get Workgroup**
 ```posh
-Get-ICWorkgroup $cic -WorkgroupId 'workgroup001'
+Get-ICWorkgroup $cic -Workgroup 'workgroup001'
 ```
 
 **Create a new workgroup**
 ```posh
-New-ICWorkgroup $cic -WorkgroupId 'workgroup001'
-New-ICWorkgroup $cic -WorkgroupId 'workgroup001' -HasQueue true -QueueType 'ACD' -IsActive true
-New-ICWorkgroup $cic -WorkgroupId 'workgroup001' -Extension '9010'
-New-ICWorkgroup $cic -WorkgroupId 'workgroup001' -Extension '9010' -Members @('agent001', 'agent002')
+New-ICWorkgroup $cic -Workgroup 'workgroup001'
+New-ICWorkgroup $cic -Workgroup 'workgroup001' -HasQueue true -QueueType 'ACD' -IsActive true
+New-ICWorkgroup $cic -Workgroup 'workgroup001' -Extension '9010'
+New-ICWorkgroup $cic -Workgroup 'workgroup001' -Extension '9010' -Members @('agent001', 'agent002')
 ```
 * Default values:
     * HasQueue: true
@@ -90,5 +90,5 @@ New-ICWorkgroup $cic -WorkgroupId 'workgroup001' -Extension '9010' -Members @('a
 
 **Remove a workgroup**
 ```posh
-Remove-ICWorkgroup $cic -WorkgroupId 'workgroup001'
+Remove-ICWorkgroup $cic -Workgroup 'workgroup001'
 ```

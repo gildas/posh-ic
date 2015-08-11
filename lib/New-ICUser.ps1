@@ -12,7 +12,7 @@ function New-ICUser() # {{{2
   Creates a new IC user. If password is ommitted, default value is '1234'
 .PARAMETER ICSession
   The Interaction Center Session
-.PARAMETER UserId
+.PARAMETER ICUser
   The Interaction Center User Identifier
 .PARAMETER Password
   The Interaction Center User Password
@@ -22,12 +22,12 @@ function New-ICUser() # {{{2
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory=$true)] [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
-    [Parameter(Mandatory=$true)] [string] $UserId,
+    [Parameter(Mandatory=$true)] [Alias("User")] [string] $ICUser,
     [Parameter(Mandatory=$false)] [string] $Password,
     [Parameter(Mandatory=$false)] [string] $Extension
   )
 
-  $userExists = Get-ICUser $ICSession -ICUserId $UserId
+  $userExists = Get-ICUser $ICSession -ICUser $ICUser
   if (-not ([string]::IsNullOrEmpty($userExists))) {
     return
   }
@@ -44,7 +44,7 @@ function New-ICUser() # {{{2
   }
 
   $body = ConvertTo-Json(@{
-   "configurationId" = New-ICConfigurationId $UserId
+   "configurationId" = New-ICConfigurationId $ICUser
    "extension" = $Extension
   })
 

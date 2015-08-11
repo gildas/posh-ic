@@ -18,11 +18,11 @@ function Remove-ICUser() # {{{2
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory=$true)]  [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
-    [Parameter(Mandatory=$true)] [Alias("UserId")] [string] $ICUserId
+    [Parameter(Mandatory=$true)] [Alias("User")] [string] $ICUser
   )
 
   # User exists?
-  $userExists = Get-ICUser $ICSession -ICUserId $ICUserId
+  $userExists = Get-ICUser $ICSession -ICUser $ICUser
   if ([string]::IsNullOrEmpty($userExists)) {
     # User does not exist
     return
@@ -33,7 +33,7 @@ function Remove-ICUser() # {{{2
     "ININ-ICWS-CSRF-Token" = $ICSession.token;
   }
 
-  $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users/$ICUserId" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
+  $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users/$ICUser" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
 
   Write-Verbose "Response: $response"
   [PSCustomObject] $response

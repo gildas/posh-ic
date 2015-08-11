@@ -18,12 +18,12 @@ function Get-ICUser() # {{{2
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory=$true)]  [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
-    [Parameter(Mandatory=$true)] [Alias("UserId")] [string] $ICUserId
+    [Parameter(Mandatory=$true)] [Alias("User")] [string] $ICUser
   )
 
-  if (! $PSBoundParameters.ContainsKey('ICUserId'))
+  if (! $PSBoundParameters.ContainsKey('ICUser'))
   {
-    $ICUserId = $ICSession.user
+    $ICUser = $ICSession.user
   }
 
   $headers = @{
@@ -34,7 +34,7 @@ function Get-ICUser() # {{{2
   $response = '';
 
   try {
-      $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users/$ICUserId" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
+      $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users/$ICUser" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
   }
   catch [System.Net.WebException] {
     # If user not found, ignore the exception

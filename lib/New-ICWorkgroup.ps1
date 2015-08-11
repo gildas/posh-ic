@@ -12,7 +12,7 @@ function New-ICWorkgroup() # {{{2
   Creates a new CIC workgroup
 .PARAMETER ICSession
   The Interaction Center Session
-.PARAMETER WorkgroupId
+.PARAMETER ICWorkgroup
   The Interaction Center Workgroup Identifier
 .PARAMETER Extension
   The Interaction Center Workgroup Extension
@@ -22,7 +22,7 @@ function New-ICWorkgroup() # {{{2
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory=$true)] [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
-    [Parameter(Mandatory=$true)] [string] $WorkgroupId,
+    [Parameter(Mandatory=$true)] [Alias("Workgroup")] [string] $ICWorkgroup,
     [Parameter(Mandatory=$false)] [string] $Extension,
     [Parameter(Mandatory=$false)] [string[]] $Members,
     [Parameter(Mandatory=$false)] [boolean] $HasQueue,
@@ -30,7 +30,7 @@ function New-ICWorkgroup() # {{{2
     [Parameter(Mandatory=$false)] [boolean] $IsActive
   )
 
-  $workgroupExists = Get-ICWorkgroup $ICSession -ICWorkgroupId $WorkgroupId
+  $workgroupExists = Get-ICWorkgroup $ICSession -ICWorkgroup $ICWorkgroup
   if (-not ([string]::IsNullOrEmpty($workgroupExists))) {
     return
   }
@@ -69,7 +69,7 @@ function New-ICWorkgroup() # {{{2
   }
 
   $body = ConvertTo-Json(@{
-   "configurationId" = New-IcConfigurationId $WorkgroupId
+   "configurationId" = New-IcConfigurationId $ICWorkgroup
    "extension"       = $Extension
    "hasQueue"        = $HasQueue
    "queueType"       = 5

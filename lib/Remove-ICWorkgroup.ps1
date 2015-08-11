@@ -18,11 +18,11 @@ function Remove-ICWorkgroup() # {{{2
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory=$true)]  [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
-    [Parameter(Mandatory=$true)] [Alias("WorkgroupId")] [string] $ICWorkgroupId
+    [Parameter(Mandatory=$true)] [Alias("Workgroup")] [string] $ICWorkgroup
   )
 
   # Workgroup exists?
-  $workgroupExists = Get-ICWorkgroup $ICSession -ICWorkgroupId $ICWorkgroupId
+  $workgroupExists = Get-ICWorkgroup $ICSession -ICWorkgroup $ICWorkgroup
   if ([string]::IsNullOrEmpty($workgroupExists)) {
     # Workgroup does not exist
     return
@@ -33,7 +33,7 @@ function Remove-ICWorkgroup() # {{{2
     "ININ-ICWS-CSRF-Token" = $ICSession.token;
   }
 
-  $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/workgroups/$ICWorkgroupId" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
+  $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/workgroups/$ICWorkgroup" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
 
   Write-Verbose "Response: $response"
   [PSCustomObject] $response
