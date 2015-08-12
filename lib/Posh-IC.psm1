@@ -8,6 +8,7 @@ if ($PSVersionTable.PSVersion.Major -lt 3)
 
 Push-Location $PSScriptRoot
 . .\__Add-Types.ps1
+Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\New-ICSession.ps1
 . .\Remove-ICSession.ps1
 . .\Get-ICSessionStatus.ps1
