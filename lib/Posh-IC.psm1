@@ -13,6 +13,20 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Remove-ICSession.ps1
 . .\Get-ICSessionStatus.ps1
 . .\Get-ICUserStatus.ps1
+. .\Get-ICUsers.ps1
+. .\New-ICUser.ps1
+. .\Get-ICUser.ps1
+. .\Remove-ICUser.ps1
+. .\Get-ICWorkgroups.ps1
+. .\Get-ICWorkgroup.ps1
+. .\New-ICWorkgroup.ps1
+. .\Remove-ICWorkgroup.ps1
+. .\New-ICConfigurationId.ps1
+. .\Get-IPAProcesses.ps1
+. .\Get-IPAProcess.ps1
+. .\Start-IPAProcess.ps1
+. .\Import-IPAProcess.ps1
+. .\Export-IPAProcess.ps1
 Pop-Location
 
 Export-ModuleMember `
@@ -20,5 +34,19 @@ Export-ModuleMember `
     'New-ICSession',
     'Remove-ICSession',
     'Get-ICSessionStatus',
-    'Get-ICUserStatus'
+    'Get-ICUserStatus',
+    'Get-ICUsers',
+    'New-ICUser',
+    'Get-ICUser',
+    'Remove-ICUser',
+    'Get-ICWorkgroups',
+    'Get-ICWorkgroup',
+    'New-ICWorkgroup',
+    'Remove-ICWorkgroup',
+    'New-ICConfigurationId',
+    'Get-IPAProcesses',
+    'Get-IPAProcess',
+    'Start-IPAProcess',
+    'Import-IPAProcess',
+    'Export-IPAProcess'
   )
