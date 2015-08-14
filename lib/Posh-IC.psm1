@@ -21,6 +21,11 @@ Push-Location $PSScriptRoot
 . .\New-ICWorkgroup.ps1
 . .\Remove-ICWorkgroup.ps1
 . .\New-ICConfigurationId.ps1
+. .\Get-IPAProcesses.ps1
+. .\Get-IPAProcess.ps1
+. .\Start-IPAProcess.ps1
+. .\Import-IPAProcess.ps1
+. .\Export-IPAProcess.ps1
 Pop-Location
 
 Export-ModuleMember `
@@ -37,5 +42,10 @@ Export-ModuleMember `
     'Get-ICWorkgroup',
     'New-ICWorkgroup',
     'Remove-ICWorkgroup',
-    'New-ICConfigurationId'
+    'New-ICConfigurationId',
+    'Get-IPAProcesses',
+    'Get-IPAProcess',
+    'Start-IPAProcess',
+    'Import-IPAProcess',
+    'Export-IPAProcess'
   )

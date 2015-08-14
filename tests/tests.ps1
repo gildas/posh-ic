@@ -23,10 +23,14 @@ $cicTestUser3    = 'posh-user3' # This user should NOT exist on your CIC server.
 $cicExistingWorkgroup    = 'TestWorkgroup'  # This workgroup should exist on your CIC server. This script will only test its existence and will not modify it.
 $cicTestWorkgroup        = 'posh-workgroup' # This workgroup should NOT exist on your CIC server. It will be created and deleted by this script for testing purposes.
 
+$cicTestIPAProcess = 'Test Process' # This IPA process should exist on your CIC server.
+
+$currentPath= Split-Path((Get-Variable MyInvocation -Scope 0).Value).MyCommand.Path
+
 # Update module
 # -------------
 Remove-Module Posh-IC
-Import-Module ..\lib\Posh-IC.psm1
+Import-Module "$($currentPath)\..\lib\Posh-IC.psm1"
 
 ##################
 # Connect to CIC #
@@ -69,14 +73,26 @@ New-ICWorkgroup $cic -Workgroup $cicTestWorkgroup -Extension '9010' -Members @($
 # Remove it
 Remove-ICWorkgroup $cic -Workgroup $cicTestWorkgroup
 
-###########
-# Cleanup #
-###########
+##############################
+# Cleanup Users & Workgroups #
+##############################
 
 # Remove test users
 Remove-ICUser $cic -User $cicTestUser1
 Remove-ICUser $cic -User $cicTestUser2
 Remove-ICUser $cic -User $cicTestUser3
+
+#######
+# IPA #
+#######
+<# !! Getting 403 (Forbidden) !! #>
+<#Get-IPAProcesses $cic#> 
+<#Get-IPAProcess $cic $cicTestIPAProcess#>
+<#Start-IPAProcess $cic -DefinitionId $cicTestIPAProcess#>
+
+<# This works but these need to be executed directly on the CIC server and are provided here as examples #>
+<# Import-IPAProcess $cic -Password '1234' -Path "C:\Users\vagrant\Desktop\Exports\Test Process-2.IPAExport" #>
+<# Export-IPAProcess $cic -Password '1234' -Path "C:\Users\Vagrant\Desktop\Exports\" #>
 
 ######################
 # Disconnect Session #
