@@ -34,8 +34,6 @@ function Remove-ICUser() # {{{2
   }
 
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users/$ICUser" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-
-  Write-Verbose "Response: $response"
   [PSCustomObject] $response
 } # }}}2
 

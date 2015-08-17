@@ -25,7 +25,7 @@ function Get-ICSessionStatus() # {{{2
     "ININ-ICWS-CSRF-Token" = $ICSession.token;
   }
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/connection" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
-
+  Write-Output $response | Format-Table
+  
   [ININ.ConnectionState] $response.connectionState
 } # }}}2
