@@ -24,8 +24,30 @@ function Get-ICSessionStatus() # {{{2
     "Accept-Language"      = $ICSession.language;
     "ININ-ICWS-CSRF-Token" = $ICSession.token;
   }
-  $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/connection" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
+  try
+  {
+    $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/connection" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
+    Write-Verbose "Response: $response"
 
-  [ININ.ConnectionState] $response.connectionState
+    [ININ.ConnectionState] $response.connectionState
+  }
+  catch [System.Net.WebException]
+  {
+    if ($_.Exception.Response.StatusCode -eq 'Unauthorized')
+    {
+      $details = $_.ErrorDetails | ConvertFrom-Json
+      if ( `
+          (($details.errorId -eq 'error.request.connection.authenticationFailure') -and `
+           ($details.errorCode -eq -2147221499)) ` <# Session Identifier is invalid #> `
+          -or `
+          ($details.errorCode -eq 1)               <# Session Identifier is wrong format #> `
+          -or `
+          ($details.errorCode -eq 2)               <# Session Identifier was not found #> `
+        )
+      {
+        return [ININ.ConnectionState]::Down
+      }
+    }
+    Throw $_
+  }
 } # }}}2
