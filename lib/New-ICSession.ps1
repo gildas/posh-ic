@@ -36,7 +36,9 @@ function New-ICSession() # {{{2
     [ValidateSet("http", "https")]
     [string] $Protocol = "http",
     [Parameter(Mandatory=$false)]
-    [int] $Port = 8018
+    [int] $Port = 8018,
+    [Parameter(Mandatory=$false)]
+    [int] $MaxRedirections = 8
   )
 
   $auth_settings = @{
@@ -53,35 +55,55 @@ function New-ICSession() # {{{2
   {
     $Port = 8019
   }
-  $url      = "${Protocol}://${ComputerName}:${Port}/icws"
-  $response = Invoke-WebRequest -Uri "${url}/connection" -Method Post -ContentType "application/json; charset=utf8" -Body $auth_settings -Headers $headers -SessionVariable webSession -ErrorAction Stop
-  $results  = ConvertFrom-JSON $response
-  Write-Verbose "Connected to ${ComputerName} as ${User}"
-  Write-Debug "Results: $results"
 
-  $cookie_info = $response.Headers["Set-Cookie"] -replace '(Secure|HttpOnly)(?([,;])|$)','$1=1; '
-  $cookie_info = ConvertFrom-StringData ($cookie_info -replace '; ',"`n")
-  $cookie = ''
-  foreach($key in $cookie_info.Keys)
+  foreach ($redirection in 1 .. $MaxRedirections)
   {
-    if ('version','path','domain','expires','HttpOnly','Secure' -notcontains $key)
+    try
     {
-      $cookie += "; ${key}=$($cookie_info[$key])"
+      $url      = "${Protocol}://${ComputerName}:${Port}/icws"
+      $response = Invoke-WebRequest -Uri "${url}/connection" -Method Post -ContentType "application/json; charset=utf8" -Body $auth_settings -Headers $headers -SessionVariable webSession -ErrorAction Stop
+      $results  = ConvertFrom-JSON $response
+      Write-Verbose "Connected to ${ComputerName} as ${User}"
+      Write-Debug "Results: $results"
+
+      $cookie_info = $response.Headers["Set-Cookie"] -replace '(Secure|HttpOnly)(?([,;])|$)','$1=1; '
+      $cookie_info = ConvertFrom-StringData ($cookie_info -replace '; ',"`n")
+      $cookie = ''
+      foreach($key in $cookie_info.Keys)
+      {
+        if ('version','path','domain','expires','HttpOnly','Secure' -notcontains $key)
+        {
+          $cookie += "; ${key}=$($cookie_info[$key])"
+        }
+      }
+      $cookie = $cookie.substring(2) # Remove the initial '; '
+      Write-Debug "Adding cookie: $cookie to URL: $url"
+      $webSession.Cookies.SetCookies($url, $cookie);
+
+      return [ININ.ICSession] @{
+        id         = $results.sessionId;
+        token      = $results.csrfToken;
+        baseUrl    = [System.Uri] $url;
+        webSession = $webSession;
+        servers    = $results.alternateHostList;
+        server     = $results.icServer;
+        user       = [ININ.ICUser] @{ id = $results.userID; display = $results.userDisplayName };
+        language   = $Language;
+      }
+    }
+    catch [System.Net.WebException]
+    {
+      if ($_.Exception.Response.StatusCode -ne 'ServiceUnavailable') { Throw $_ }
+      if ([string]::IsNullOrEmpty($_.ErrorDetails))                  { Throw $_ }
+      try { $details = ConvertFrom-Json $_.ErrorDetails } catch{}
+      if ($details -eq $null)                                        { Throw $_ }
+      Write-Verbose "$ComputerName error: $($details.message) [$($details.errorId)]"
+      if ('error.server.notAcceptingConnections','error.server.unavailable' -notcontains $details.errorId) { Throw $_ }
+      if ($details.alternateHostList.Count -eq 0) { Throw $_ }
+      $ComputerName = $details.alternateHostList[0]
+      Write-Verbose "Next Server to Try: $ComputerName"
     }
   }
-  $cookie = $cookie.substring(2) # Remove the initial '; '
-  Write-Debug "Adding cookie: $cookie to URL: $url"
-  $webSession.Cookies.SetCookies($url, $cookie);
-
-  [ININ.ICSession] @{
-    id         = $results.sessionId;
-    token      = $results.csrfToken;
-    baseUrl    = [System.Uri] $url;
-    webSession = $webSession;
-    servers    = $results.alternateHostList;
-    server     = $results.icServer;
-    user       = [ININ.ICUser] @{ id = $results.userID; display = $results.userDisplayName };
-    language   = $Language;
-  }
+  Throw "Unavailable" # TODO: Throw better Exception!
 } # }}}2
 
