@@ -119,6 +119,21 @@ Describe "New-ICSession" { # {{{
     } # }}}
   } # }}}
 
+  Context "When using several servers" { # {{{
+    BeforeEach { $config   = $configs.multi }
+    It "should log in" { # {{{
+      $servers  = $config.servers
+      $user     = $config.user
+      $password = $config.password
+
+      $sessions = New-ICSession -ComputerName $servers -User $user -Password $password
+      $sessions | ForEach-Object {
+        $_    | Should Not BeNullOrEmpty
+        $_.id | Should Not BeNullOrEmpty
+      }
+    } # }}}
+  } # }}}
+
   BeforeEach { # {{{
     $configs = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json)
     $session = $null
