@@ -106,6 +106,19 @@ Describe "New-ICSession" { # {{{
     } # }}}
   } # }}}
 
+  Context "When using Out of Server Session Manager (OSSM)" { # {{{
+    BeforeEach { $config   = $configs.ossm }
+    It "should log in" { # {{{
+      $server   = $config.server
+      $user     = $config.user
+      $password = $config.password
+
+      $session = New-ICSession -ComputerName $server -User $user -Password $password
+      $session    | Should Not BeNullOrEmpty
+      $session.id | Should Not BeNullOrEmpty
+    } # }}}
+  } # }}}
+
   BeforeEach { # {{{
     $configs = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json)
     $session = $null
