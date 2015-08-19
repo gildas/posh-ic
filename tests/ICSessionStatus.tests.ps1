@@ -49,7 +49,7 @@ Describe "Get-ICSessionStatus" { # {{{
   } # }}}
 
   BeforeEach { # {{{
-    $config = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json)
+    $config = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json).simple
     $session = New-ICSession -ComputerName $config.server -User $config.user -Password $config.password
     Write-Verbose "Session: $($session.id) connected to $($session.server) as $($session.user.id)"
   } # }}}

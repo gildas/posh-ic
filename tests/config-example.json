@@ -1,5 +1,19 @@
 {
-  "server":   "cic.acme.com",
-  "user":     "agent",
-  "password": "s3sam3"
+  "simple": {
+    "server":   "cic.acme.com",
+    "user":     "agent",
+    "password": "s3sam3"
+  },
+  "ossm": {
+    "server":   "cic-ossm.acme.com",
+    "user":     "agent",
+    "password": "s3sam3"
+  },
+  "multi": {
+    "type":     "multi",
+    "servers":  [ "cic1.acme.com", "cic2.acme.com" ],
+    "server":   "cic.acme.com",
+    "user":     "agent",
+    "password": "s3sam3"
+  }
 }

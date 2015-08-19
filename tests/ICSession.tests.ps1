@@ -25,13 +25,15 @@ Describe "New-ICSession" { # {{{
   } # }}}
 
   Context "When using wrong credential" { # {{{
+    BeforeEach { $config   = $configs.simple }
     It "should throw an error" { # {{{
       $server   = $config.server
       $user     = $config.user
       $password = 'nothing'
 
       { New-ICSession -ComputerName $server -User $user -Password $password } | Should Throw
-      $error[0].FullyQualifiedErrorId | Should Match 'WebCmdletWebResponseException.*'
+      $error[0].Exception.GetType() | Should Be 'System.Net.WebException'
+      $error[0].ErrorDetails | Should Not BeNullOrEmpty
       { $error[0].ErrorDetails | ConvertFrom-Json } | Should Not Throw
       ($error[0].ErrorDetails | ConvertFrom-Json).errorId   | Should Be 'error.request.connection.authenticationFailure'
       ($error[0].ErrorDetails | ConvertFrom-Json).errorCode | Should Be '-2147221503'
@@ -39,6 +41,7 @@ Describe "New-ICSession" { # {{{
   } # }}}
 
   Context "When using wrong session identifier" { # {{{
+    BeforeEach { $config   = $configs.simple }
     It "should throw" { # {{{
       $server   = $config.server
       $user     = $config.user
@@ -58,6 +61,7 @@ Describe "New-ICSession" { # {{{
   } # }}}
 
   Context "When using wrong token" { # {{{
+    BeforeEach { $config   = $configs.simple }
     It "should throw" { # {{{
       $server   = $config.server
       $user     = $config.user
@@ -77,6 +81,7 @@ Describe "New-ICSession" { # {{{
   } # }}}
 
   Context "When existing server and good credential are used" { # {{{
+    BeforeEach { $config   = $configs.simple }
     It "should log in" { # {{{
       $server   = $config.server
       $user     = $config.user
@@ -102,7 +107,7 @@ Describe "New-ICSession" { # {{{
   } # }}}
 
   BeforeEach { # {{{
-    $config = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json)
+    $configs = (Get-Content -Raw -Path '.\config.json' | ConvertFrom-Json)
     $session = $null
   } # }}}
 
