@@ -11,7 +11,7 @@ if (-not ([System.Management.Automation.PSTypeName] $TypeName).Type)
     {
       None,
       Up,
-      Dowm
+      Down
     };
   }
 '@
