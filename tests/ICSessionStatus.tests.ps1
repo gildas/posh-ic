@@ -8,11 +8,7 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $lib  = Join-Path (Split-Path -Parent $here) 'lib'
 
 Push-Location $lib
-. .\__Add-Types.ps1
-Update-FormatData -AppendPath .\__display.formats.ps1xml
-. .\New-ICSession.ps1
-. .\Remove-ICSession.ps1
-. .\Get-ICSessionStatus.ps1
+  Import-Module .\Posh-IC.psm1
 Pop-Location
 
 Describe "Get-ICSessionStatus" { # {{{
