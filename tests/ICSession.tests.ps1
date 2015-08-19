@@ -37,7 +37,8 @@ Describe "New-ICSession" { # {{{
       { New-ICSession -ComputerName $server -User $user -Password $password } | Should Throw
       $error[0].FullyQualifiedErrorId | Should Match 'WebCmdletWebResponseException.*'
       { $error[0].ErrorDetails | ConvertFrom-Json } | Should Not Throw
-      ($error[0].ErrorDetails | ConvertFrom-Json).errorId | Should Be 'error.request.connection.authenticationFailure'
+      ($error[0].ErrorDetails | ConvertFrom-Json).errorId   | Should Be 'error.request.connection.authenticationFailure'
+      ($error[0].ErrorDetails | ConvertFrom-Json).errorCode | Should Be '-2147221503'
     } # }}}
   } # }}}
 
@@ -88,6 +89,19 @@ Describe "New-ICSession" { # {{{
       $session = New-ICSession -ComputerName $server -User $user -Password $password
       $session    | Should Not BeNullOrEmpty
       $session.id | Should Not BeNullOrEmpty
+    } # }}}
+
+    It "should log out" { # {{{
+      $server   = $config.server
+      $user     = $config.user
+      $password = $config.password
+
+      $session = New-ICSession -ComputerName $server -User $user -Password $password
+      $session    | Should Not BeNullOrEmpty
+      $session.id | Should Not BeNullOrEmpty
+      Remove-ICSession $session
+      $state = Get-ICSessionStatus $session
+      $state | Should Be Down
     } # }}}
   } # }}}
 
