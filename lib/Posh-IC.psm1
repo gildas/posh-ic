@@ -27,6 +27,11 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Start-IPAProcess.ps1
 . .\Import-IPAProcess.ps1
 . .\Export-IPAProcess.ps1
+. .\Get-ICSkills.ps1
+. .\Get-ICSkill.ps1
+. .\New-ICSkill.ps1
+. .\Remove-ICSkill.ps1
+. .\Get-ICLicenseAllocations.ps1
 Pop-Location
 
 Export-ModuleMember `
@@ -48,5 +53,10 @@ Export-ModuleMember `
     'Get-IPAProcess',
     'Start-IPAProcess',
     'Import-IPAProcess',
-    'Export-IPAProcess'
+    'Export-IPAProcess',
+    'Get-ICSkills',
+    'Get-ICSkill',
+    'New-ICSkill',
+    'Remove-ICSkill',
+    'Get-ICLicenseAllocations'
   )

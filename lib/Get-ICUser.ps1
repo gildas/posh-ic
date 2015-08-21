@@ -42,8 +42,6 @@ function Get-ICUser() # {{{2
         Write-Error $_
     }
   }
-
-  Write-Verbose "Response: $response"
   [PSCustomObject] $response
 } # }}}2
 

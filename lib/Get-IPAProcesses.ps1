@@ -30,7 +30,7 @@ function Get-IPAProcesses() # {{{2
   $query = "/?beginSearchWindow=$($aYearAgo)&endSearchWindow=$($currentDate)"
   
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/ipa/process-instances$($query)" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
+  Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
 

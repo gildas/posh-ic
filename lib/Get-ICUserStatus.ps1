@@ -34,7 +34,7 @@ function Get-ICUserStatus() # {{{2
     "ININ-ICWS-CSRF-Token" = $ICSession.token;
   }
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/status/user-statuses/$($ICUser.id)" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
+  Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
 

@@ -34,8 +34,6 @@ function Remove-ICWorkgroup() # {{{2
   }
 
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/workgroups/$ICWorkgroup" -Method Delete -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-
-  Write-Verbose "Response: $response"
   [PSCustomObject] $response
 } # }}}2
 

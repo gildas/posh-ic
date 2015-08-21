@@ -78,6 +78,6 @@ function New-ICWorkgroup() # {{{2
   })
 
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/workgroups" -Body $body -Method Post -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
+  Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2

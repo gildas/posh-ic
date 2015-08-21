@@ -33,7 +33,7 @@ function Start-IPAProcess() # {{{2
   })
 
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/ipa/process-instances" -Body $body -Method Post -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
+  Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
 

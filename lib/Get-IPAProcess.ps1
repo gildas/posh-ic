@@ -33,7 +33,6 @@ function Get-IPAProcess() # {{{2
   $query = "/?beginSearchWindow=$($aYearAgo)&endSearchWindow=$($currentDate)&where definitionId eq $($DefinitionId)"
   
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/ipa/process-instances/$($query)" -Method Get -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Verbose "Response: $response"
   [PSCustomObject] $response
 } # }}}2
 
