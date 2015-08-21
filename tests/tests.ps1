@@ -12,7 +12,7 @@
 
 # Test variables
 # --------------
-$cicServer   = 'testregfr' # Your CIC server
+$cicServer   = 'localhost' # Your CIC server
 $cicUser     = 'vagrant'   # CIC username to connect to your CIC server
 $cicPassword = '1234'      # User CIC password
 
@@ -42,6 +42,7 @@ $cic = New-ICSession -ComputerName $cicServer -User $cicUser -Password $cicPassw
 #########
 # Users #
 #########
+
 
 # Get all users
 Get-ICUsers $cic
@@ -141,6 +142,13 @@ Remove-ICWorkgroup $cic -Workgroup $cicTestWorkgroup
 Remove-ICUser $cic -User 'posh-ictestuser1'
 Remove-ICUser $cic -User 'posh-ictestuser2'
 Remove-ICUser $cic -User 'posh-ictestuser3'
+
+# Add several users at once
+New-ICUsers $cic -ICUsers '{"qpTgqASDASDSAD":{"username":"posh-ictestuser1","password":"1234","extension":"91234"}, "wjihsdiuhcsd":{"username":"posh-ictestuser2","password":"5678","extension":"95678"}}'
+
+# Remove users
+Remove-ICUser $cic -User 'posh-ictestuser1'
+Remove-ICUser $cic -User 'posh-ictestuser2'
 
 #######
 # IPA #

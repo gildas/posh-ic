@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 spec/reports
 test[s]/tmp
 test[s]/version_tmp
@@ -5,4 +6,4 @@ test[s]/config.json
 tmp/
 [lL]og[s]/
 .vagrant/
-
+ICWS-TestData
