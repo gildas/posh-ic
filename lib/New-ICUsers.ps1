@@ -14,20 +14,20 @@ function New-ICUsers() # {{{2
   The Interaction Center Session
 .PARAMETER ICUsers
   Hashtable of user data, including usernames, passwords and extensions
+  Sample:
+  {"randomstring":{"username":"testcicuser1","password":"1234","extension":"8002"}, "anotherrandomstring":{"username":"testcicuser2","password":"5678","extension":"8003"}}
 #> # }}}3
   [CmdletBinding()]
   Param(
-    #[Parameter(Mandatory=$true)] [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
+    [Parameter(Mandatory=$true)] [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
     [Parameter(Mandatory=$true)] [Alias("Users", "UserData")] [string] $ICUsers
   )
 
-  <#
-  "{tjejejdjf => {username => testcicuser1, password => 1234, extension => 8002}, wjihsdiuhcsd => {username => testcicuser2, password => 5678, extension => 8003 }}"
-  #>
-
   $users = ConvertFrom-Json($ICUsers)
 
-  $users
-} # }}}2
+  $users | Get-Member -MemberType NoteProperty | ForEach-Object { 
+    $currentUser = $users."$($_.Name)"
+    New-ICUser $ICSession -ICUser $currentUser.username -Password $currentUser.password -Extension $currentUser.extension
+  }
 
-#New-ICUsers "{tjejejdjf => {username => testcicuser1, password => 1234, extension => 8002}, wjihsdiuhcsd => {username => testcicuser2, password => 5678, extension => 8003 }}"
+} # }}}2
