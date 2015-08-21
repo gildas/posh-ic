@@ -78,6 +78,6 @@ function Import-IPAProcess() # {{{2
     "ExitCode" = $process.ExitCode
   }
 
-  Write-Verbose "Response: $response"
+  Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
