@@ -15,7 +15,7 @@ function New-ICWorkgroups() # {{{2
 .PARAMETER ICWorkgroups
   Hashtable of user data, including usernames and extensions
   Sample:
-  {"randomstring":{"workgroupname":"testcicworkgroup1","extension":"6001"}, "anotherrandomstring":{"workgroupname":"testcicworkgroup2","extension":"6002"}}
+  {"randomstring":{"workgroupname":"testcicworkgroup1","extension":"6001"}, "anotherrandomstring":{"workgroupname":"testcicworkgroup2","extension":"6002","members":{"testuser1","testuser2"}}
 #> # }}}3
   [CmdletBinding()]
   Param(
@@ -23,11 +23,17 @@ function New-ICWorkgroups() # {{{2
     [Parameter(Mandatory=$true)] [Alias("Workgroups", "WorkgroupData")] [string] $ICWorkgroups
   )
 
-  $workgroups = ConvertFrom-Json($ICWorkgroups)
+  $workgroups = ConvertFrom-Json $ICWorkgroups
+  $workgroups
+
 
   $workgroups | Get-Member -MemberType NoteProperty | ForEach-Object { 
     $currentWorkgroup = $workgroups."$($_.Name)"
-    New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension
+    if ($currentWorkgroup.Members) {
+      New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension -Members $currentWorkgroup.members
+    } else {
+      New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension
+    }
   }
 
 } # }}}2

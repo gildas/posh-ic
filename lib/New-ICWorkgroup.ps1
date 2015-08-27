@@ -74,7 +74,7 @@ function New-ICWorkgroup() # {{{2
    "hasQueue"        = $HasQueue
    "queueType"       = 5
    "isActive"        = $IsActive
-   "members"         = @( $Members | foreach { New-ICConfigurationId $_ } )
+   "members"         = if ([string]::IsNullOrEmpty($Members)) { $null } else {@( $Members | foreach { New-ICConfigurationId $_ } )}
   })
 
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/workgroups" -Body $body -Method Post -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
