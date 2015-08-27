@@ -17,7 +17,7 @@ function Remove-ICWorkgroup() # {{{2
 #> # }}}3
   [CmdletBinding()]
   Param(
-    [Parameter(Mandatory=$true)]  [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
+    [Parameter(Mandatory=$true)] [Alias("Session", "Id")] [ININ.ICSession] $ICSession,
     [Parameter(Mandatory=$true)] [Alias("Workgroup")] [string] $ICWorkgroup
   )
 
