@@ -101,6 +101,11 @@ Remove-ICUser $cic -User $cicTestUser
 New-ICUser $cic -User $cicTestUser -SecurityRights "*" -AccessRights "*" -AdministrativeRights "*" # Only All (*) administrative rights are supported for now
 Remove-ICUser $cic -User $cicTestUser
 
+# Test creating a new user and then set licenses
+New-ICUser $cic -User $cicTestUser -Password '12345'
+Set-ICLicense $cic -User $cicTestUser -HasClientAccess $true -MediaLevel 3 -LicenseActive $true -AdditionalLicenses @("*")
+Remove-ICUser $cic -User $cicTestUser
+
 ##########
 # Skills #
 ##########
@@ -156,7 +161,7 @@ Remove-ICUser $cic -User 'posh-ictestuser2'
 # IPA #
 #######
 <# !! Getting 403 (Forbidden) !! #>
-<#Get-IPAProcesses $cic#> 
+<#Get-IPAProcesses $cic#>
 <#Get-IPAProcess $cic $cicTestIPAProcess#>
 <#Start-IPAProcess $cic -DefinitionId $cicTestIPAProcess#>
 

@@ -36,6 +36,7 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Get-ICLicenseAllocations.ps1
 . .\Import-AttProfile.ps1
 . .\Export-AttProfile.ps1
+. .\Set-ICLicense.ps1
 Pop-Location
 
 Export-ModuleMember `
@@ -66,5 +67,6 @@ Export-ModuleMember `
     'Remove-ICSkill',
     'Get-ICLicenseAllocations',
     'Import-AttProfile',
-    'Export-AttProfile'
+    'Export-AttProfile',
+    'Set-ICLicense'
   )
