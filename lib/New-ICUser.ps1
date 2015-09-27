@@ -24,7 +24,7 @@ function New-ICUser() # {{{2
   If true, assigned licenses should be considered active by the server. Default value is true.
 .PARAMETER MediaLevel
   Used to configure how many interaction types an ACD user can handle at a specified time. Set to 0 for None, 1, 2 or 3. Default value is 3.
-.PARAMETER MediaLevel
+.PARAMETER AdditionalLicenses
   List of additional licenses to assign to the user.
 .PARAMETER NTDomainUser
   Domain user. Use Domain\User. If ommitted, no Domain User will be assigned to this CIC user.
@@ -1315,4 +1315,3 @@ function New-ICUser() # {{{2
   Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
-
