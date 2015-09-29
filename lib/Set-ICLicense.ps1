@@ -78,7 +78,7 @@ function Set-ICLicense() # {{{2
   if ($AdditionalLicenses) {
     # Add all licenses?
     if ($AdditionalLicenses.Length -eq 1 -and $AdditionalLicenses[0] -eq "*") {
-      $allAdditionalLicenses = ((Get-ICLicenseAllocations $cic).items | foreach { if (-not ($_.configurationId.id -match "EASYSCRIPTER" -or $_.configurationId.id -match "MSCRM")) { $_.configurationId } })
+      $allAdditionalLicenses = ((Get-ICLicenseAllocations $ICSession).items | foreach { if (-not ($_.configurationId.id -match "EASYSCRIPTER" -or $_.configurationId.id -match "MSCRM")) { $_.configurationId } })
       # Add missing licenses
       $allAdditionalLicenses += New-ICConfigurationId "I3_ACCESS_IPAD_USER_SUPERVISOR"
       $allAdditionalLicenses += New-ICConfigurationId "I3_OPTIMIZER_SHOWRTA"
