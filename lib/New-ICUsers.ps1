@@ -25,9 +25,11 @@ function New-ICUsers() # {{{2
 
   $users = ConvertFrom-Json($ICUsers)
 
-  $users | Get-Member -MemberType NoteProperty | ForEach-Object { 
+  $users | Get-Member -MemberType NoteProperty | ForEach-Object {
     $currentUser = $users."$($_.Name)"
-    New-ICUser $ICSession -ICUser $currentUser.username -Password $currentUser.password -Extension $currentUser.extension
+    if (![string]::IsNullOrEmpty($currentUser.username)) {
+      New-ICUser $ICSession -ICUser $currentUser.username -Password $currentUser.password -Extension $currentUser.extension
+    }
   }
 
 } # }}}2

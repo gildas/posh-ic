@@ -27,12 +27,14 @@ function New-ICWorkgroups() # {{{2
   $workgroups
 
 
-  $workgroups | Get-Member -MemberType NoteProperty | ForEach-Object { 
+  $workgroups | Get-Member -MemberType NoteProperty | ForEach-Object {
     $currentWorkgroup = $workgroups."$($_.Name)"
-    if ($currentWorkgroup.Members) {
-      New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension -Members $currentWorkgroup.members
-    } else {
-      New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension
+    if (![string]::IsNullOrEmpty($currentWorkgroup.workgroupname)) {
+      if ($currentWorkgroup.Members) {
+        New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension -Members $currentWorkgroup.members
+      } else {
+        New-ICWorkgroup $ICSession -ICWorkgroup $currentWorkgroup.workgroupname -Extension $currentWorkgroup.extension
+      }
     }
   }
 
