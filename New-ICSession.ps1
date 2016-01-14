@@ -1,22 +1,60 @@
 <#
-# AUTHOR : Gildas Cherruel
-#>
-
-function New-ICSession() # {{{2
-{
-# Documentation {{{3
-<#
 .SYNOPSIS
-  Connects to an Interaction Centerò server
+  Connects to an Interaction Center(c) server
 .DESCRIPTION
-  Connects to an Interaction Centerò server
+  Connects to an Interaction Center(c) server.
+  
+  If the CIC server is in a switchover the Cmdlet will automatically switch to the primary server
+  If the CIC server uses Out of Server Session Managers, the Cmdlet will automatically use them.
 .PARAMETER ComputerName
   The Interaction Center to connect to.
+.PARAMETER Credential
+  A PSCredential object to connect with.
+  if not provided, please user User and Password.
 .PARAMETER User
   The User to connect with
 .PARAMETER Password
   The passwprd for the User
-#> # }}}3
+.PARAMETER Application
+  The Application label to identify this script on the server
+.PARAMETER Language
+  The language used to receive error texts, messages, statuses.
+  Note: The language must be installed on the IC Server.
+.PARAMETER Protocol
+  The transport protocol to use.
+  Valid values:  (http, https)
+  Default value: http
+.PARAMETER Port
+  The TCP Port to connect to.
+  This is usually calculated after the protocol automatically.
+.PARAMETER MaxRedirection
+  The maximum number of servers to hop (cic, backup, OSSM) before giving up
+.INPUTS
+  The ComputerName can be piped in.
+.OUTPUTS
+  ININ.ICSession
+  Represents the CIC Session
+.EXAMPLE
+  $session = New-ICSession -ComputerName cic.acme.com -User admin -Password S3cr3t
+
+  Description
+  -----------
+  Connects to the CIC server cic.acme.com with user name and a clear password
+.EXAMPLE
+  $session = New-ICSession -ComputerName cic.acme.com -Credential (Get-Credential admin)
+
+  Description
+  -----------
+  Connects to the CIC server cic.acme.com with credentials for user admin (A dialog box pops up)
+.EXAMPLE
+  $session = New-ICSession -ComputerName cic.acme.com -Credential (Get-Credential admin) -Protocol https
+
+  Description
+  -----------
+  Connects to the CIC server cic.acme.com with credentials for user admin (A dialog box pops up) over a secure transport.
+#>
+function New-ICSession() # {{{2
+{
   [CmdletBinding(DefaultParameterSetName='Credential')]
   [OutputType([ININ.ICSession])]
   Param(
