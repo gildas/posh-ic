@@ -61,7 +61,7 @@ function New-ICSession() # {{{2
     try
     {
       $url      = "${Protocol}://${ComputerName}:${Port}/icws"
-      $response = Invoke-WebRequest -Uri "${url}/connection" -Method Post -ContentType "application/json; charset=utf8" -Body $auth_settings -Headers $headers -SessionVariable webSession -ErrorAction Stop
+      $response = Invoke-WebRequest -Uri "${url}/connection" -Method Post -ContentType "application/json; charset=utf-8" -Body $auth_settings -Headers $headers -SessionVariable webSession -ErrorAction Stop
       $results  = ConvertFrom-JSON $response
       Write-Verbose "Connected to ${ComputerName} as ${User}"
       Write-Debug "Results: $results"
