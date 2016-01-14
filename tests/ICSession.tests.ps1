@@ -4,8 +4,7 @@
 # See https://github.com/pester/Pester
 #
 
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$lib  = Join-Path (Split-Path -Parent $here) 'lib'
+$lib = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Push-Location $lib
   Import-Module .\Posh-IC.psm1
