@@ -2,6 +2,22 @@
 
 Powershell module to connect to an Interaction Center over ICWS.
 
+## Installing via PowerShellGet
+
+If you have [PowerShellGet](https://www.powershellgallery.com) installed (Windows 10 has it by default), just run:
+
+```posh
+Install-Module posh-ic
+```
+
+## Installing via PsGet
+
+If you have [PsGet](https://psget.net) installed, just run:
+
+```posh
+Install-Module posh-ic
+```
+
 ## HowTo
 
 Import the Posh-IC module in your script
