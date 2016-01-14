@@ -31,7 +31,7 @@ $currentPath= Split-Path((Get-Variable MyInvocation -Scope 0).Value).MyCommand.P
 # Update module
 # -------------
 Remove-Module Posh-IC
-Import-Module "$($currentPath)\..\lib\Posh-IC.psm1"
+Import-Module "$($currentPath)\..\Posh-IC.psm1"
 
 ##################
 # Connect to CIC #
