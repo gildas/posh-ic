@@ -17,30 +17,44 @@ function New-ICSession() # {{{2
 .PARAMETER Password
   The passwprd for the User
 #> # }}}3
-  [CmdletBinding()]
+  [CmdletBinding(DefaultParameterSetName='Credential')]
+  [OutputType([ININ.ICSession])]
   Param(
-    [Parameter(Mandatory=$true)]
+    [Parameter(Position=1, Mandatory=$true)]
     [Alias("ICServer", "Server", "Notifier")]
     [string] $ComputerName,
-    [Parameter(Mandatory=$false)]
-    [Alias("ApplicationName")]
-    [string] $Application = "Powershell Client",
-    [Parameter(Mandatory=$true)]
+    [Parameter(Position=2, ParameterSetName='Credential', Mandatory=$true)]
+    [System.Management.Automation.PSCredential] $Credential,
+    [Parameter(Position=2, ParameterSetName='Plain', Mandatory=$true)]
     [Alias("UserID", "Username")]
     [string] $User,
-    [Parameter(Mandatory=$true)]
+    [Parameter(Position=3, ParameterSetName='Plain', Mandatory=$true)]
     [string] $Password,
-    [Parameter(Mandatory=$false)]
+    [Parameter(Position=3, ParameterSetName='Credential', Mandatory=$false)]
+    [Parameter(Position=4, ParameterSetName='Plain',      Mandatory=$false)]
+    [Alias("ApplicationName")]
+    [string] $Application = "Powershell Client",
+    [Parameter(Position=4, ParameterSetName='Credential', Mandatory=$false)]
+    [Parameter(Position=5, ParameterSetName='Plain',      Mandatory=$false)]
     [string] $Language = 'en-US',             # TODO: Get the current system language
-    [Parameter(Mandatory=$false)]
+    [Parameter(Position=5, ParameterSetName='Credential', Mandatory=$false)]
+    [Parameter(Position=6, ParameterSetName='Plain',      Mandatory=$false)]
     [ValidateSet("http", "https")]
     [string] $Protocol = "http",
-    [Parameter(Mandatory=$false)]
+    [Parameter(Position=6, ParameterSetName='Credential', Mandatory=$false)]
+    [Parameter(Position=7, ParameterSetName='Plain',      Mandatory=$false)]
     [int] $Port = 8018,
-    [Parameter(Mandatory=$false)]
+    [Parameter(Position=7, ParameterSetName='Credential', Mandatory=$false)]
+    [Parameter(Position=8, ParameterSetName='Plain',      Mandatory=$false)]
     [int] $MaxRedirections = 8
   )
 
+  if ($PSCmdlet.ParameterSetName -eq 'Credential')
+  {
+    Write-Verbose "Loading PSCredentials"
+    $User     = $Credential.UserName
+    $Password = $Credential.GetNetworkCredential().password
+  }
   $auth_settings = @{
     __type          = "urn:inin.com:connection:icAuthConnectionRequestSettings";
     userID          = $User;
