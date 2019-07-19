@@ -1378,7 +1378,6 @@ function New-ICUser() # {{{2
 
   # Call it!
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users" -Body $body -Method Post -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
-  Write-Output "Body:" $body
   Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
