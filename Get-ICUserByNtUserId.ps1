@@ -1,5 +1,5 @@
 <#
-# AUTHOR : Pierrick Lozach
+# AUTHOR : Paul McGurn, based on Pierrick Lozach's original work
 #>
 
 function Get-ICUserByNtUserId() 
