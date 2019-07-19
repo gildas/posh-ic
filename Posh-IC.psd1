@@ -79,6 +79,7 @@ FunctionsToExport = @(
     'Get-ICSessionStatus',
     'Get-ICUserStatus',
     'Get-ICUser',
+    'Get-ICUserByNtUserId',
     'Get-ICUsers',
     'New-ICUser',
     'New-ICUsers',
@@ -101,7 +102,9 @@ FunctionsToExport = @(
     'Get-ICLicenseAllocations',
     'Import-AttProfile',
     'Export-AttProfile',
-    'Set-ICLicense'
+    'Set-ICLicense',
+    'Get-ICUserByNtUserId',
+    'Get-ICRoles'
   )
 
 # Cmdlets to export from this module

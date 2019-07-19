@@ -24,6 +24,10 @@ function New-ICUser() # {{{2
   If true, assigned licenses should be considered active by the server. Default value is true.
 .PARAMETER MediaLevel
   Used to configure how many interaction types an ACD user can handle at a specified time. Set to 0 for None, 1, 2 or 3. Default value is 3.
+.PARAMETER AllocationType
+  Used to configure concurrent vs. assignable.  0 = Assignble, 1 = Concurrent
+.PARAMETER Location
+  Used to configure the location of the user
 .PARAMETER AdditionalLicenses
   List of additional licenses to assign to the user.
 .PARAMETER NTDomainUser
@@ -31,7 +35,11 @@ function New-ICUser() # {{{2
 .PARAMETER PreferredLanguage
   Preferred Language. Use the ISO 63901 code (i.e. en-US for American English, fr for French (France). Default value is the same language as installed on the server (system default).
 .PARAMETER Roles
-  Collection of roles to assign to this user. i.e. "Administrator, Supervisor"
+  String Collection of roles to assign to this user. i.e. "Administrator,Supervisor"
+.PARAMETER Workgroups
+  String Collection of workgroups to assign to this user.  ie. "saas_comm_care,GH Support"
+.PARAMETER OutboundANI
+  String representing the outbound caller ID for the user.  ie. "+18056177000"
 .PARAMETER SecurityRights
   Set to '*' to assign all security rights. Default sets no rights.
 .PARAMETER AccessRights
@@ -48,10 +56,14 @@ function New-ICUser() # {{{2
     [Parameter(Mandatory=$false)] [Alias("ClientAccess")] [boolean] $HasClientAccess,
     [Parameter(Mandatory=$false)] [Alias("EnableLicenses", "ActivateLicenses")] [boolean] $LicenseActive,
     [Parameter(Mandatory=$false)] [Alias("MediaLicense")] [int] $MediaLevel,
+    [Parameter(Mandatory=$false)] [int]$allocationType,
+    [Parameter(Mandatory=$false)] [String]$location,
     [Parameter(Mandatory=$false)] [string[]] $AdditionalLicenses,
     [Parameter(Mandatory=$false)] [Alias("DomainUser")] [string] $NTDomainUser,
     [Parameter(Mandatory=$false)] [Alias("Language")] [string] $PreferredLanguage,
     [Parameter(Mandatory=$false)] [string[]] $Roles,
+    [Parameter(Mandatory=$false)] [string[]] $Workgroups,
+    [Parameter(Mandatory=$false)] [string] $outboundAni,
     [Parameter(Mandatory=$false)] [string] $SecurityRights,
     [Parameter(Mandatory=$false)] [string] $AccessRights,
     [Parameter(Mandatory=$false)] [string] $AdministrativeRights
@@ -82,6 +94,10 @@ function New-ICUser() # {{{2
   {
     $MediaLevel = 3
   }
+  if (!$PSBoundParameters.ContainsKey('AllocationType'))
+  {
+    $allocationType = 0
+  }
 
   # Add headers
   $headers = @{
@@ -102,13 +118,14 @@ function New-ICUser() # {{{2
     "hasClientAccess" = $HasClientAccess
     "licenseActive" = $LicenseActive
     "mediaLevel" = $MediaLevel
+    "allocationType" = $allocationType
   }
 
   # Add Additional Licenses if there are any
   if ($AdditionalLicenses) {
     # Add all licenses?
     if ($AdditionalLicenses.Length -eq 1 -and $AdditionalLicenses[0] -eq "*") {
-      $allAdditionalLicenses = ((Get-ICLicenseAllocations $cic).items | foreach { if (-not ($_.configurationId.id -match "EASYSCRIPTER" -or $_.configurationId.id -match "MSCRM")) { $_.configurationId } })
+      $allAdditionalLicenses = ((Get-ICLicenseAllocations $cic).items | ForEach-Object { if (-not ($_.configurationId.id -match "EASYSCRIPTER" -or $_.configurationId.id -match "MSCRM")) { $_.configurationId } })
       # Add missing licenses
       $allAdditionalLicenses += New-ICConfigurationId "I3_ACCESS_IPAD_USER_SUPERVISOR"
       $allAdditionalLicenses += New-ICConfigurationId "I3_OPTIMIZER_SHOWRTA"
@@ -118,7 +135,7 @@ function New-ICUser() # {{{2
     }
     else {
       $licenseProperties += @{
-        "additionalLicenses" = @( $AdditionalLicenses | foreach { New-ICConfigurationId $_ } )
+        "additionalLicenses" = @( $AdditionalLicenses | ForEach-Object { New-ICConfigurationId $_ } )
       }
     }
   }
@@ -148,16 +165,65 @@ function New-ICUser() # {{{2
       }
     }
   }
+  ################
+  # Outbound ANI #
+  ################
+  if (![string]::IsNullOrEmpty($outboundAni)) {
+    $body += @{
+      "outboundAni" = $outboundAni      
+    }
+  }
+  ######################
+  # Location #
+  ######################
+  if (![string]::IsNullOrEmpty($Location)) {
+    $body += @{
+      "location" = @{
+        "id" = $location
+      }
+    }
+  }
 
   #########
   # Roles #
   #########
+  #original code
+  <#
   if ($Roles) {
     $body += @{
-      "roles" = @( $Roles | foreach { @{ "id" = $_ } })
+      "roles" = @( $Roles | ForEach-Object { @{ "id" = $_ } })
+    }
+  }#>
+
+  #PMM edit as original code didn't actually work
+  if ($Roles) {
+
+    $body += @{
+      "roles" = @{
+        "actualValue" = 
+        @(
+          foreach($role in $roles){
+            @{"id" = $role}
+          }
+        )        
+      }
     }
   }
 
+  ##############
+  # Workgroups #
+  ##############
+  if ($Workgroups) {
+
+    $body += @{
+      "workgroups" = @(
+          foreach($workgroup in $workgroups){
+            @{"id" = $workgroup}
+          }
+        )        
+      
+    }
+  }
   ###################
   # Security Rights #
   ###################
@@ -1312,6 +1378,7 @@ function New-ICUser() # {{{2
 
   # Call it!
   $response = Invoke-RestMethod -Uri "$($ICsession.baseURL)/$($ICSession.id)/configuration/users" -Body $body -Method Post -Headers $headers -WebSession $ICSession.webSession -ErrorAction Stop
+  Write-Output "Body:" $body
   Write-Output $response | Format-Table
   [PSCustomObject] $response
 } # }}}2
