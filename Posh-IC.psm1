@@ -14,7 +14,6 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Get-ICSessionStatus.ps1
 . .\Get-ICUserStatus.ps1
 . .\Get-ICUser.ps1
-. .\Get-ICUserByNtUserId.ps1
 . .\Get-ICUsers.ps1
 . .\New-ICUser.ps1
 . .\New-ICUsers.ps1
