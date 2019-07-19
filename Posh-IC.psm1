@@ -14,6 +14,7 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Get-ICSessionStatus.ps1
 . .\Get-ICUserStatus.ps1
 . .\Get-ICUser.ps1
+. .\Get-ICUserByNtUserId.ps1
 . .\Get-ICUsers.ps1
 . .\New-ICUser.ps1
 . .\New-ICUsers.ps1
@@ -37,6 +38,8 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Import-AttProfile.ps1
 . .\Export-AttProfile.ps1
 . .\Set-ICLicense.ps1
+. .\Get-ICUserByNtUserId.ps1
+. .\Get-ICRoles.ps1
 Pop-Location
 
 Export-ModuleMember `
@@ -46,6 +49,8 @@ Export-ModuleMember `
     'Get-ICSessionStatus',
     'Get-ICUserStatus',
     'Get-ICUser',
+    'Get-ICUserByNtUserId',
+    'Get-ICRoles',
     'Get-ICUsers',
     'New-ICUser',
     'New-ICUsers',
@@ -68,5 +73,7 @@ Export-ModuleMember `
     'Get-ICLicenseAllocations',
     'Import-AttProfile',
     'Export-AttProfile',
-    'Set-ICLicense'
+    'Set-ICLicense',
+    'Get-ICUserByNtUserId',
+    'Get-ICRoles'
   )
