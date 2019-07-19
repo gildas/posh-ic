@@ -1,5 +1,5 @@
 ﻿<#
-# AUTHOR : Pierrick Lozach
+# AUTHOR : Pierrick Lozach, extended by Paul McGurn
 #>
 
 function New-ICUser() # {{{2
