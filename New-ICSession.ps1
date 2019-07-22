@@ -148,7 +148,7 @@ function New-ICSession() # {{{2
       if ($_.Exception.Response.StatusCode -ne 'ServiceUnavailable') { Throw $_ }
       if ([string]::IsNullOrEmpty($_.ErrorDetails))                  { Throw $_ }
       try { $details = ConvertFrom-Json $_.ErrorDetails } catch{}
-      if ($details -eq $null)                                        { Throw $_ }
+      if ($null -eq $details)                                        { Throw $_ }
       Write-Verbose "$ComputerName error: $($details.message) [$($details.errorId)]"
       if ('error.server.notAcceptingConnections','error.server.unavailable' -notcontains $details.errorId) { Throw $_ }
       if ($details.alternateHostList.Count -eq 0) { Throw $_ }
