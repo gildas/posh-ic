@@ -25,12 +25,7 @@ function Remove-ICUser() # {{{2
   $userExists = Get-ICUser $ICSession -ICUser $ICUser
   if ([string]::IsNullOrEmpty($userExists)) {
     # User does not exist
-<<<<<<< HEAD
-    Write-Output "No user found for $ICUser"
-    return
-=======
     return "User lookup failed for $ICUser , no action taken"
->>>>>>> 8933fa5b451b81199d2ce0dba98e7d3c5c9a2846
   }
 
   $headers = @{
