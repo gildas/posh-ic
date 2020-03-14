@@ -1,7 +1,6 @@
 if (Get-Module Posh-IC) { return }
 
-if ($PSVersionTable.PSVersion.Major -lt 3)
-{
+if ($PSVersionTable.PSVersion.Major -lt 3) {
   Write-Error "Posh-IC work only on Powershell 3.0 and higher"
   exit
 }
@@ -39,40 +38,43 @@ Update-FormatData -AppendPath .\__display.formats.ps1xml
 . .\Set-ICLicense.ps1
 . .\Get-ICUserByNtUserId.ps1
 . .\Get-ICRoles.ps1
+. .\Get-ICFeatureLicenses.ps1
+
 Pop-Location
 
 Export-ModuleMember `
   -Function @(
-    'New-ICSession',
-    'Remove-ICSession',
-    'Get-ICSessionStatus',
-    'Get-ICUserStatus',
-    'Get-ICUser',
-    'Get-ICUserByNtUserId',
-    'Get-ICRoles',
-    'Get-ICUsers',
-    'New-ICUser',
-    'New-ICUsers',
-    'Remove-ICUser',
-    'Get-ICWorkgroup',
-    'Get-ICWorkgroups',
-    'New-ICWorkgroup',
-    'New-ICWorkgroups',
-    'Remove-ICWorkgroup',
-    'New-ICConfigurationId',
-    'Get-IPAProcesses',
-    'Get-IPAProcess',
-    'Start-IPAProcess',
-    'Import-IPAProcess',
-    'Export-IPAProcess',
-    'Get-ICSkills',
-    'Get-ICSkill',
-    'New-ICSkill',
-    'Remove-ICSkill',
-    'Get-ICLicenseAllocations',
-    'Import-AttProfile',
-    'Export-AttProfile',
-    'Set-ICLicense',
-    'Get-ICUserByNtUserId',
-    'Get-ICRoles'
-  )
+  'New-ICSession',
+  'Remove-ICSession',
+  'Get-ICSessionStatus',
+  'Get-ICUserStatus',
+  'Get-ICUser',
+  'Get-ICUserByNtUserId',
+  'Get-ICRoles',
+  'Get-ICUsers',
+  'New-ICUser',
+  'New-ICUsers',
+  'Remove-ICUser',
+  'Get-ICWorkgroup',
+  'Get-ICWorkgroups',
+  'New-ICWorkgroup',
+  'New-ICWorkgroups',
+  'Remove-ICWorkgroup',
+  'New-ICConfigurationId',
+  'Get-IPAProcesses',
+  'Get-IPAProcess',
+  'Start-IPAProcess',
+  'Import-IPAProcess',
+  'Export-IPAProcess',
+  'Get-ICSkills',
+  'Get-ICSkill',
+  'New-ICSkill',
+  'Remove-ICSkill',
+  'Get-ICLicenseAllocations',
+  'Import-AttProfile',
+  'Export-AttProfile',
+  'Set-ICLicense',
+  'Get-ICUserByNtUserId',
+  'Get-ICRoles',
+  'Get-ICFeatureLicenses'
+)
